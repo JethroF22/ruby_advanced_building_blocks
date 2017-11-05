@@ -80,14 +80,24 @@ module Enumerable
         self
     end
 
-    def my_inject(start_value=0)
-        
+    def my_inject value=:value
+        if value.kind_of? Symbol
+            value = self[0]
+            self[1..-1].my_each do |element|
+                value = yield(value, element)
+            end
+        else
+            self.my_each do |element|
+                value = yield(value, element)
+            end
+        end
+        value
     end
 end
 
 arr = [1, 0, 3, 0, 5]
-result = arr.my_count do |num|
-    num > 0
+result = arr.my_inject do |prev, current|
+    prev + current
 end
-puts result
-puts arr.inspect
+p result
+p arr
