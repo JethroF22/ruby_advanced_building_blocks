@@ -95,8 +95,14 @@ module Enumerable
     end
 end
 
+def multiply_els array
+    array.my_map do |element|
+        
+    end
+end
+
 arr = [1, 0, 3, 0, 5]
-result = arr.my_inject do |prev, current|
+result = arr.my_inject(10) do |prev, current|
     prev + current
 end
 p result
