@@ -73,9 +73,15 @@ module Enumerable
         end
     end
 
-    def my_map
-        self.my_each_with_index do |element, element_index|
-            self[element_index] = yield(element)
+    def my_map(&func)
+        if !block_given? 
+            self.my_each_with_index do |element, element_index|
+                self[element_index] = func.call(element)
+            end
+        else
+            self.my_each_with_index do |element, element_index|
+                self[element_index] = yield(element)
+            end
         end
         self
     end
@@ -96,14 +102,13 @@ module Enumerable
 end
 
 def multiply_els array
-    array.my_map do |element|
-        
+    result = array.my_inject do |result, element|
+        result * element
     end
+    result
 end
 
-arr = [1, 0, 3, 0, 5]
-result = arr.my_inject(10) do |prev, current|
-    prev + current
-end
+square_num = Proc.new {|num| num ** 2}
+
+result = [2, 4, 5].my_map &square_num
 p result
-p arr
